@@ -4,7 +4,71 @@
 (function () {
     'use strict';
     var app = angular.module("naturalForce");
-    app.service("artworkListService", ["$http", function ($http) {
-
+    app.service("artworkService", ["$http","domain", function ($http,domain) {
+        this.getArtList=function(callback){
+            $http({
+                url:domain+'/api/artworks',
+                method:"GET"
+            }).then(function(data){
+                console.log(data);
+                if(callback){
+                    callback(data,true);
+                }
+            },function(error){
+                console.log(error);
+                if(callback){
+                    callback(error,false);
+                }
+            });
+        }
+        this.loadArtwork=function(artId,callback){
+            $http({
+                url:domain+'/api/artworks/'+artId,
+                method:"GET"
+            }).then(function(data){
+                console.log(data);
+                if(callback){
+                    callback(data,true);
+                }
+            },function(error){
+                console.log(error);
+                if(callback){
+                    callback(error,false);
+                }
+            });
+        }
+        this.loadArtworkImages=function(artId,callback){
+            $http({
+                url:domain+'/api/artwork/images/'+artId,
+                method:"GET"
+            }).then(function(data){
+                console.log(data);
+                if(callback){
+                    callback(data,true);
+                }
+            },function(error){
+                console.log(error);
+                if(callback){
+                    callback(error,false);
+                }
+            });
+        }
+        this.buyArtwork=function(artwork,callback){
+            $http({
+                url:domain+'/api/artwork-orders/json',
+                method:"POST",
+                data:artwork
+            }).then(function(data){
+                console.log(data);
+                if(callback){
+                    callback(data,true);
+                }
+            },function(error){
+                console.log(error);
+                if(callback){
+                    callback(error,false);
+                }
+            });
+        }
     }]);
 })();

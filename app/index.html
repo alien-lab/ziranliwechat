@@ -7,11 +7,69 @@
     <title>自然力</title>
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css"/>
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="bower_components/AngularJS-Toaster/toaster.min.css"/>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
+    <script src="bower_components/angular-cache-buster/angular-cache-buster.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.min.js"></script>
+    <script  src="bower_components/ngstorage/ngStorage.min.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script  src="bower_components/AngularJS-Toaster/toaster.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <style>
+        .loadingpnl{
+            width:100%;
+            height:100%;
+            position:fixed;
+            top:0;
+            left:0;
+            background:rgba(0,0,0,0.2);
+            z-index:99;
+        }
+        .loading{
+            width: 80px;
+            height: 40px;
+            margin: 0 auto;
+            margin-top:55%;
+        }
+        .loading span{
+            display: inline-block;
+            width: 8px;
+            height: 100%;
+            border-radius: 4px;
+            background: lightgreen;
+            -webkit-animation: load 1s ease infinite;
+        }
+        @-webkit-keyframes load{
+            0%,100%{
+                height: 40px;
+                background: lightgreen;
+            }
+            50%{
+                height: 70px;
+                margin: -15px 0;
+                background: lightblue;
+            }
+        }
+        .loading span:nth-child(2){
+            -webkit-animation-delay:0.2s;
+        }
+        .loading span:nth-child(3){
+            -webkit-animation-delay:0.4s;
+        }
+        .loading span:nth-child(4){
+            -webkit-animation-delay:0.6s;
+        }
+        .loading span:nth-child(5){
+            -webkit-animation-delay:0.8s;
+        }
+    </style>
 </head>
 <body ng-app="naturalForce">
 <div class="loadingpnl" ng-if="$root.isloading">
-    <div class="loading">
+    <div class="loading" >
         <span></span>
         <span></span>
         <span></span>
@@ -19,11 +77,22 @@
         <span></span>
     </div>
 </div>
-<div ng-view></div>
-<script src="bower_components/angular/angular.js"></script>
-<script src="bower_components/angular-route/angular-route.js"></script>
-<script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
-<script src="main.js"></script>
+<div ui-view></div>
+<toaster-container toaster-options="{'animation-class': 'toast-top-center'}"></toaster-container>
+
+<script src="js/main.js"></script>
+<script src="js/wechat/wechat-utils.js"></script>
+<script src="js/blocks/auth/principal.service.js"></script>
+<script src="js/blocks/auth/auth.service.js"></script>
+<script src="js/blocks/auth/auth.jwt.service.js"></script>
+<script src="js/blocks/auth/account.service.js"></script>
+<script src="js/blocks/interceptor/auth.interceptor.js"></script>
+<script src="js/blocks/interceptor/auth-expired.interceptor.js"></script>
+<script src="js/blocks/handlers/state.handler.js"></script>
+<script src="js/blocks/config/localstorage.config.js"></script>
+<script src="js/blocks/config/http.config.js"></script>
+<script src="js/alienlab.imagecss.directive.js"></script>
+
 <script src="js/controller.js"></script>
 <script src="js/service.js"></script>
 </body>
