@@ -52,8 +52,13 @@
                         console.log(code);
                         console.log("system start! find code param.invoke code user method");
                         wechatService.loadWechatUser(code);
+                    }else{
+                        //alert("没有从微信跳转");
+                        var shareid=$location.search().shareid;
+                        console.log()
+                        var link=wechatService.getAuthUrl($location.$$absUrl,shareid);
+                        window.location.href=link;
                     }
-
                 }
             });
 
