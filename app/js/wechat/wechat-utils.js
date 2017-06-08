@@ -2,8 +2,8 @@
     'use strict';
 
     var app=angular.module("naturalForce");
-    app.service("wechatService",["$http","domain","wechatappid","wechatObject","$rootScope",
-        function($http,domain,wechatappid,wechatObject,$rootScope){
+    app.service("wechatService",["$http","domain","wechatappid","wechatObject","$rootScope","$cookieStore",
+        function($http,domain,wechatappid,wechatObject,$rootScope,$cookieStore){
         this.wechatConfig=function(){
             $http({
                 url:domain+"api/jsapi?url="+encodeURIComponent(window.location.href),
@@ -85,6 +85,9 @@
                 wechatObject.language=response.data.language;
                 $rootScope.isloading=false;
                 $rootScope.openid=wechatObject.openid;
+                $cookieStore.put("openid",wechatObject.openid);
+                console.log($rootScope.openid);
+                console.log($cookieStore.get("openid"));
             });
         }
 

@@ -4,12 +4,14 @@
 (function () {
     'use strict';
     var app = angular.module("naturalForce");
-    app.controller("artworkListController", ["$scope","$rootScope","artworkService","toaster","$state",
-        function ($scope,$rootScope,artworkService,toaster,$state) {
+    app.controller("artworkListController", ["$scope","$rootScope","artworkService","toaster","$state",'$cookieStore',
+        function ($scope,$rootScope,artworkService,toaster,$state,$cookieStore) {
         $scope.title="艺术品列表";
         $scope.artlist=[];
         $scope.$watch("$root.openid",function(newvalue,oldvalue){
             console.log("openid changed:",newvalue);
+            console.log($rootScope.openid);
+            console.log($cookieStore.get("openid"));
             if(newvalue&&newvalue!=""){
                 toaster.pop("info","操作提示","获取到openid:"+newvalue);
             }
@@ -98,5 +100,15 @@
             $scope.hideuserinfo=function(){
                 $scope.userinfo=false;
             }
+    }]);
+    app.controller("wechatUserController",["$scope","wechatUserService","$cookieStore",function ($scope,wechatUserService,$cookieStore) {
+        var openid = $cookieStore.get("openid");
+        console.log(openid);
+        wechatUserService.getMyArtOrder(openid,function (data,flag) {
+            if (flag==true){
+                $scope.artOrders=data;
+            }
+        });
+        wechatUserService.getMyCourseOrder();
     }]);
 })();

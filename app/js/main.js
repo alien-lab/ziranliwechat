@@ -23,6 +23,11 @@
                     templateUrl: 'views/artworkDesc.html',
                     controller: "artworkDescController"
                 })
+                .state('myInfo', {
+                    url: '/myInfo',
+                    templateUrl: 'views/myInfo.html',
+                    controller: 'wechatUserController'
+                })
             ;
     }])
     ;
@@ -42,7 +47,8 @@
                 if(runmodal=="dev"){//调试模式模拟身份
                     wechatService.testUser();
                 }else{
-                    var url=$location.$$absUrl;
+                    // var url=$location.$$absUrl;
+                    var url = "http://test.moistmedia.net/ziranliwechat/?from=singlemessage&isappinstalled=0&code=0517ZA5g12tL3y0MaJ3g1ANL5g17ZA5G&state=1#!/artworkDesc?shareid=1";
                     var pos=url.indexOf("code=");
                     if(pos>0){
                         url=url.substring(pos+5);
@@ -53,7 +59,6 @@
                         console.log("system start! find code param.invoke code user method");
                         wechatService.loadWechatUser(code);
                     }
-
                 }
             });
 
@@ -69,9 +74,12 @@
         // .constant('tokenUrl', "http://localhost:8082/api/authenticate/client")
         // .constant('domain',"http://localhost:8082/")
         // .constant('rootpath',"http://localhost:8082/activitywechat/")
-        .constant('tokenUrl', "http://test.moistmedia.net/ziranliserver/api/authenticate")
-        .constant('domain',"http://test.moistmedia.net/ziranliserver/")
-        .constant('rootpath',"http://test.moistmedia.net/ziranliwechat/")
+        .constant('tokenUrl', "http://localhost:8080/ziranliserver/api/authenticate")
+        .constant('domain',"http://localhost:8080/ziranliserver/")
+        .constant('rootpath',"http://localhost:8080/ziranliwechat/")
+        // .constant('tokenUrl', "http://test.moistmedia.net/ziranliserver/api/authenticate")
+        // .constant('domain',"http://test.moistmedia.net/ziranliserver/")
+        // .constant('rootpath',"http://test.moistmedia.net/ziranliwechat/")
         .constant('homePage',"artworkList")
         .constant('wechatappid',"wx83f372e021582278")
         .constant('runmodal',"prod")

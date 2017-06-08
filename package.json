@@ -1,9 +1,9 @@
 {
-  "name": "angular-seed",
+  "name": "ziranliwechat",
   "private": true,
   "version": "0.0.0",
-  "description": "A starter project for AngularJS",
-  "repository": "https://github.com/angular/angular-seed",
+  "description": "Natural Force Wechat",
+  "repository": "https://github.com/alien-lab/ziranliwechat.git",
   "license": "MIT",
   "devDependencies": {
     "bower": "^1.7.7",
