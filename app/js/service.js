@@ -89,4 +89,75 @@
             });
         }
     }]);
+
+    app.service("courseService",["$http","domain",function($http,domain){
+        this.getCourseList=function(callback){
+            $http({
+                url:domain+'/api/courses',
+                method:"GET"
+            }).then(function(data){
+                console.log(data);
+                if(callback){
+                    callback(data,true);
+                }
+            },function(error){
+                console.log(error);
+                if(callback){
+                    callback(error,false);
+                }
+            });
+        }
+        this.loadCourse=function(courseId,callback){
+            $http({
+                url:domain+'/api/courses/'+courseId,
+                method:"GET"
+            }).then(function(data){
+                console.log(data);
+                if(callback){
+                    callback(data,true);
+                }
+            },function(error){
+                console.log(error);
+                if(callback){
+                    callback(error,false);
+                }
+            });
+        }
+
+        this.buyCourse=function(course,callback){
+            $http({
+                url:domain+'/api/course-orders/json',
+                method:"POST",
+                data:course
+            }).then(function(data){
+                console.log(data);
+                if(callback){
+                    callback(data.data,true);
+                }
+            },function(error){
+                console.log(error);
+                if(callback){
+                    callback(error,false);
+                }
+            });
+        }
+        this.payfinish=function(openid,orderId,callback){
+            $http({
+                url:domain+"api/course-orders/pay",
+                method:"POST",
+                data:{
+                    openid:openid,
+                    orderId:orderId
+                }
+            }).then(function(result){
+                if(callback){
+                    callback(result.data,true);
+                }
+            },function(result){
+                if(callback){
+                    callback(result,false);
+                }
+            });
+        }
+    }])
 })();

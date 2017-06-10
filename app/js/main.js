@@ -23,6 +23,17 @@
                     templateUrl: 'views/artworkDesc.html',
                     controller: "artworkDescController"
                 })
+                .state('courseList', {
+                    url: '/courseList',
+                    templateUrl: 'views/courseList.html',
+                    controller: "courseListController"
+                })
+                .state('courseDesc', {
+                    params:{course:null},
+                    url: '/courseDesc',
+                    templateUrl: 'views/courseDesc.html',
+                    controller: "courseDescController"
+                })
             ;
     }])
     ;
