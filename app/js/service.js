@@ -61,7 +61,7 @@
             }).then(function(data){
                 console.log(data);
                 if(callback){
-                    callback(data,true);
+                    callback(data.data,true);
                 }
             },function(error){
                 console.log(error);
@@ -103,6 +103,24 @@
                 console.log(error);
                 if (callback){
                     callback(error,false);
+                }
+            });
+        }
+        this.payfinish=function(openid,orderId,callback){
+            $http({
+                url:domain+"api/artwork-orders/pay",
+                method:"POST",
+                data:{
+                    openid:openid,
+                    orderId:orderId
+                }
+            }).then(function(result){
+                if(callback){
+                    callback(result.data,true);
+                }
+            },function(result){
+                if(callback){
+                    callback(result,false);
                 }
             });
         }
