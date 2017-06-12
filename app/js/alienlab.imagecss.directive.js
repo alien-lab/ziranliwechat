@@ -6,12 +6,20 @@
             return {
                 restrict: 'A',
                 scope: {
-                    image:"@"
+                    image:"@",
+                    rate:"@"
                 },
                 link: function(scope, element, attrs){
                     console.log($(element));
-                    element.css("height",element.width()/2+"px");
+                    var rate=scope.rate;
+                    if(!rate){
+                        rate=2;
+                    }
+                    console.log(element.width());
+                    element.css("height",(element.width()/parseInt(rate)));
                     element.css("background-image","url('"+scope.image+"')");
+                    element.css("background-size","cover");
+                    element.css("background-position","center center");
                     element.css("overflow","hidden");
                 }
             }
