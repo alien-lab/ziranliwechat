@@ -267,10 +267,20 @@
             $scope.rootpath=rootpath;
             $scope.course=$stateParams.course;
             $scope.order={};
-
+            $scope.onlive={};
+            $scope.$watch("$root.openid",function(newvalue,oldvalue){
+                console.log("openid changed:",newvalue);
+                courseService.loadCourseOrderByUser($scope.course.id,newvalue,function(data){
+                   if(data){
+                       $scope.order=data.courseOrder;
+                       if(data.onlive){
+                           $scope.onlive=data.onlive;
+                       }
+                   }
+                });
+            },true);
             if($scope.course==null){
                 var courseId=$location.search().course;
-
                 if(!courseId){
                     var posstate=$location.$$absUrl.indexOf("state=");
                     if(posstate>0) {
@@ -333,6 +343,9 @@
                     }
                     var orderinfo=result.orderInfo;
                     var courseOrder=result.courseOrder;
+                    if(result.onlive){
+                        $scope.onlive=result.onlive;
+                    }
                     if(orderinfo){
                         wx.chooseWXPay({
                             timestamp: orderinfo.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
@@ -343,13 +356,16 @@
                             success: function (res) {
                                 // 支付成功后的回调函数
                                 if(res.errMsg== "chooseWXPay:ok" ) {
-                                    artworkService.payfinish(wechatObject.openid,$scope.course.id,function(payresult,error){
+                                    courseService.payfinish(wechatObject.openid,courseOrder.id,function(payresult,error){
                                         if(!iserr){
                                             toaster.pop("warning","操作提示",payresult.data.errormsg);
                                             return;
                                         }
                                         toaster.pop("info","报名成功","您已成功报名该课程。");
-                                        $scope.order=payresult;
+                                        $scope.order=payresult.courseOrder;
+                                        if(payresult.onlive){
+                                            $scope.onlive=payresult.onlive;
+                                        }
                                     });
                                 }
                             }
@@ -361,6 +377,11 @@
                     }
 
                 })
+            }
+
+            $scope.gotoonlive=function(onlive){
+                var url="http://test.moistmedia.net/wechatcore/onlive/mobile/onliveroom.jsp";
+                window.location.href=wechatService.getAuthUrl(url,onlive.bc_no);
             }
     }]);
 })();

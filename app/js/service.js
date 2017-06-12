@@ -159,5 +159,19 @@
                 }
             });
         }
+        this.loadCourseOrderByUser=function(courseId,openid,callback){
+            $http({
+                url:domain+"api/course-orders/"+courseId+"/"+openid,
+                method:"GET"
+            }).then(function(result){
+                if(callback){
+                    callback(result.data,true);
+                }
+            },function(result){
+                if(callback){
+                    callback(result,false);
+                }
+            });
+        }
     }])
 })();

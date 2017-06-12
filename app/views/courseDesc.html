@@ -29,6 +29,24 @@
     </h4>
     <p class="text">{{course.memo}}</p>
     <div class="devide"></div>
+    <div class="clearfix"></div>
+    <div class="list-group-item" ng-if="onlive.bc_name" ng-click="gotoonlive(onlive)">
+        <div class="col-xs-4" alien-image rate="1" image="{{('http://test.moistmedia.net/wechatcore/onlive/media/cover/'+onlive.bc_cover)}}">
+            &nbsp;
+        </div>
+        <div class="col-xs-6">
+            <h4>{{onlive.bc_name}}</h4>
+            <p>
+                {{onlive.bc_abstract}}
+            </p>
+        </div>
+        <div class="col-xs-2">
+            <div class="btn btn-success" style="margin-top:40%;" ng-click="gotoonlive(onlive)">进入</div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+
 </div>
 
 <nav class="navbar navbar-default navbar-fixed-bottom">
@@ -39,7 +57,7 @@
         </div>
     </div>
     <div class="container" style="padding:0;" ng-if="order.payStatus=='已支付'">
-        <div type="button" style="width:100%;cursor:pointer;height:50px;line-height:50px;text-align:center;margin:0;border:none;background:#edaa2d;color:#fff;">
+        <div type="button" ng-click="gotoonlive(onlive)" style="width:100%;cursor:pointer;height:50px;line-height:50px;text-align:center;margin:0;border:none;background:#edaa2d;color:#fff;">
             进入课程内容>>
         </div>
     </div>
