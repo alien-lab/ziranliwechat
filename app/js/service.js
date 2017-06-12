@@ -75,12 +75,12 @@
         //获取个人艺术品订单
         this.getMyArtOrder=function (openid,callback) {
             $http({
-                url:domain+'/api/artwork-orders/'+openid,
+                url:domain+'/api/artworkOrders/'+openid,
                 method:'GET'
             }).then(function (data) {
-                console.log(data);
+                console.log(data.data);
                 if (callback){
-                    callback(data,true)
+                    callback(data.data,true)
                 }
             },function (error) {
                 console.log(error);
@@ -92,12 +92,12 @@
         //获取个人课程订单
         this.getMyCourseOrder=function (openid,callback) {
             $http({
-                url: domain+'/api/course-orders/'+openid,
+                url: domain+'/api/courseOrders/'+openid,
                 method: 'GET'
             }).then(function (data) {
-                console.log(data);
+                console.log(data.data);
                 if (callback){
-                    callback(data,true);
+                    callback(data.data,true);
                 }
             },function (error) {
                 console.log(error);
