@@ -320,9 +320,9 @@
             $scope.course = $stateParams.course;
             $scope.order = {};
             $scope.onlive = {};
-            $scope.$watch("$root.openid", function (newvalue, oldvalue) {
-                console.log("openid changed:", newvalue);
-                courseService.loadCourseOrderByUser($scope.course.id, newvalue, function (data) {
+            if(wechatObject.openid!=""){
+                console.log(wechatObject);
+                courseService.loadCourseOrderByUser($scope.course.id, wechatObject.openid, function (data) {
                     if (data) {
                         $scope.order = data.courseOrder;
                         if (data.onlive) {
@@ -330,7 +330,20 @@
                         }
                     }
                 });
-            }, true);
+            }else{
+                $scope.$watch("$root.openid", function (newvalue, oldvalue) {
+                    if(!newvalue)return;
+                    courseService.loadCourseOrderByUser($scope.course.id, newvalue, function (data) {
+                        if (data) {
+                            $scope.order = data.courseOrder;
+                            if (data.onlive) {
+                                $scope.onlive = data.onlive;
+                            }
+                        }
+                    });
+                }, true);
+            }
+
             if ($scope.course == null) {
                 var courseId = $location.search().course;
                 if (!courseId) {
