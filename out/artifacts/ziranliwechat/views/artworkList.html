@@ -1,0 +1,63 @@
+<style>
+    .normal_list{
+        list-style: none;
+        margin:0;
+        padding:0;
+        margin-top:51px;
+    }
+    .normal_list li{
+        margin:0;
+        padding:0;
+        margin-bottom:10px;
+    }
+    .normal_list .list_pic{
+        width:100%;
+        background-position: center center;
+        background-size:cover;
+    }
+    .normal_list .list_pic img{
+        width:100%;
+    }
+    .normal_list .list_info{
+        width:100%;
+        height:auto;
+    }
+    .normal_list .list_name{
+        width:100%;
+        text-align: center;
+        padding:10px 0;
+        font-size:180%;
+        font-weight:500;
+    }
+    .normal_list .list_desc{
+        width:100%;
+        text-align: center;
+        padding:0 5px;
+    }
+    .normal_list .list_desc_word{
+        padding:10px;
+        text-align:left;
+        text-indent:2em;
+        display: -webkit-box;
+        line-height:1.8;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
+    }
+</style>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="navbar-brand">
+        艺术品
+    </div>
+</nav>
+<ul class="row normal_list" >
+    <li class="col-md-12" ng-repeat="art in artlist" ng-click="artClick(art)">
+        <div class="list_pic"  alien-image image="{{(art.coverImage&&art.coverImage.length>0)?art.coverImage:rootpath+'image/noimg.jpg'}}">&nbsp;</div>
+        <div class="list_info" style="background:rgba(240,240,240,0.8);">
+            <div class="list_name">{{art.name}}</div>
+            <div class="list_desc"><strong>{{art.author}}|{{art.year}}|{{art.price|currency:'￥'}}</strong></div>
+            <div class="list_desc_word">{{art.memo}}</div>
+        </div>
+
+    </li>
+</ul>

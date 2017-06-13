@@ -1,0 +1,96 @@
+<style>
+    .normal_list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        margin-top: 51px;
+    }
+
+    .normal_list li {
+        margin: 0;
+        padding: 0;
+        margin-bottom: 10px;
+    }
+
+    .normal_list .list_pic {
+        width: 100%;
+        background-position: center center;
+        background-size: cover;
+    }
+
+    .normal_list .list_pic img {
+        width: 100%;
+    }
+
+    .normal_list .list_info {
+        width: 100%;
+        height: auto;
+    }
+
+    .normal_list .list_name {
+        width: 100%;
+        text-align: center;
+        padding: 10px 0;
+        font-size: 180%;
+        font-weight: 500;
+    }
+
+    .normal_list .list_desc {
+        width: 100%;
+        text-align: center;
+        padding: 0 5px;
+    }
+
+</style>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="navbar-brand">
+        个人中心
+    </div>
+</nav>
+<nav class="navbar navbar-default">
+    <div class="container" style="padding:0;">
+        <div type="button" ng-click=""
+             style="width:100%;cursor:pointer;height:50px;line-height:50px;text-align:center;margin:0;border:none;">
+        </div>
+        <div type="button" ng-click="ifArtOpen()"
+             style="width:100%;cursor:pointer;height:50px;line-height:50px;text-align:center;margin:0;border:none;">
+            {{artBtnText}}
+        </div>
+    </div>
+</nav>
+<ul class="row normal_list" ng-if="artOpen">
+    <li class="col-md-12" ng-repeat="artOrder in artOrders" ng-click="artClick(artOrder.artwork)">
+        <div class="list_pic" alien-image
+             image="{{(artOrder.artwork.coverImage&&artOrder.artwork.coverImage.length>0)?artOrder.artwork.coverImage:rootpath+'image/noimg.jpg'}}">
+            &nbsp;</div>
+        <div class="list_info" style="background:rgba(240,240,240,0.8);">
+            <div class="list_desc"><strong>{{artOrder.artwork.name}}|{{artOrder.payTime|date:"yyyy-MM-dd HH:mm"}}|
+                {{artOrder.artwork.price|currency:'￥'}}|{{artOrder.payStatus}}</strong>
+            </div>
+        </div>
+
+    </li>
+</ul>
+<div ng-if="!artOpen" style="text-align: center;font-size: 30px;">...</div>
+<nav class="navbar navbar-default">
+    <div class="container" style="padding:0;">
+        <div type="button" ng-click="ifCourseOpen()"
+             style="width:100%;cursor:pointer;height:50px;line-height:50px;text-align:center;margin:0;border:none;">
+            {{courseBtnText}}
+        </div>
+    </div>
+</nav>
+<ul class="row normal_list" ng-if="courseOpen">
+    <li class="col-md-12" ng-repeat="courseOrder in courseOrders" ng-click="">
+        <div class="list_pic" alien-image
+             image="{{(courseOrder.course.coverImage&&courseOrder.course.coverImage.length>0)?courseOrder.course.coverImage:rootpath+'image/noimg.jpg'}}">
+            &nbsp;</div>
+        <div class="list_info" style="background:rgba(240,240,240,0.8);">
+            <div class="list_desc"><strong>{{courseOrder.course.name}}|{{courseOrder.payTime|date:"yyyy-MM-dd HH:mm"}}|
+                {{courseOrder.course.price|currency:'￥'}}|{{courseOrder.payStatus}}</strong>
+            </div>
+        </div>
+
+    </li>
+</ul>
+<div ng-if="!courseOpen" style="text-align: center;font-size: 30px;">...</div>
