@@ -27,18 +27,13 @@
         height: auto;
     }
 
-    .normal_list .list_name {
-        width: 100%;
-        text-align: center;
-        padding: 10px 0;
-        font-size: 180%;
-        font-weight: 500;
-    }
-
     .normal_list .list_desc {
         width: 100%;
         text-align: center;
         padding: 0 5px;
+    }
+    .clickColor{
+        background-color: #e7e7e7;
     }
 
 </style>
@@ -46,16 +41,8 @@
     <div class="navbar-brand">
         个人中心
     </div>
-</nav>
-<nav class="navbar navbar-default">
-    <div class="container" style="padding:0;">
-        <div type="button" ng-click=""
-             style="width:100%;cursor:pointer;height:50px;line-height:50px;text-align:center;margin:0;border:none;">
-        </div>
-        <div type="button" ng-click="ifArtOpen()"
-             style="width:100%;cursor:pointer;height:50px;line-height:50px;text-align:center;margin:0;border:none;">
-            {{artBtnText}}
-        </div>
+    <div class="navbar-text pull-right" style="margin-right:1em;" ng-click="goList()">
+        <i class="glyphicon glyphicon-arrow-left"></i>
     </div>
 </nav>
 <ul class="row normal_list" ng-if="artOpen">
@@ -71,17 +58,8 @@
 
     </li>
 </ul>
-<div ng-if="!artOpen" style="text-align: center;font-size: 30px;">...</div>
-<nav class="navbar navbar-default">
-    <div class="container" style="padding:0;">
-        <div type="button" ng-click="ifCourseOpen()"
-             style="width:100%;cursor:pointer;height:50px;line-height:50px;text-align:center;margin:0;border:none;">
-            {{courseBtnText}}
-        </div>
-    </div>
-</nav>
 <ul class="row normal_list" ng-if="courseOpen">
-    <li class="col-md-12" ng-repeat="courseOrder in courseOrders" ng-click="">
+    <li class="col-md-12" ng-repeat="courseOrder in courseOrders" ng-click="courseClick(courseOrder.course)">
         <div class="list_pic" alien-image
              image="{{(courseOrder.course.coverImage&&courseOrder.course.coverImage.length>0)?courseOrder.course.coverImage:rootpath+'image/noimg.jpg'}}">
             &nbsp;</div>
@@ -93,4 +71,16 @@
 
     </li>
 </ul>
-<div ng-if="!courseOpen" style="text-align: center;font-size: 30px;">...</div>
+<div ng-if="artOpen==false&&courseOpen==false" style="text-align: center;font-size: 30px;margin-top: 51px;">...</div>
+<nav class="navbar navbar-default navbar-fixed-bottom">
+    <div class="container" style="padding:0;">
+        <div type="button" ng-click="ifArtOpen()" class="col-xs-6" ng-class="setArtClickColor()" ng-disabled="artOpen"
+             style="width:50%;cursor:pointer;height:50px;line-height:50px;text-align:center;margin:0;border: none;">
+            {{artBtnText}}
+        </div>
+        <div type="button" ng-click="ifCourseOpen()" class="col-xs-6" ng-class="setCourseClickColor()" ng-disabled="courseOpen"
+             style="width:50%;cursor:pointer;height:50px;line-height:50px;text-align:center;margin:0;border: none;">
+            {{courseBtnText}}
+        </div>
+    </div>
+</nav>

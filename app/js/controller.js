@@ -216,13 +216,15 @@
                 $scope.userinfo = false;
             }
         }]);
-    app.controller("wechatUserController", ["$scope", "wechatUserService", "$cookieStore", function ($scope, wechatUserService, $cookieStore) {
+    app.controller("wechatUserController", ["$scope", "wechatUserService", "$cookieStore","$state", function ($scope, wechatUserService, $cookieStore,$state) {
         var openid = $cookieStore.get("openid");
         console.log(openid);
         $scope.artOpen = false;
-        $scope.artBtnText = "展开已购艺术品";
+        $scope.artBtnText = "已购艺术品";
         $scope.courseOpen = false;
-        $scope.courseBtnText = "展开已购课程";
+        $scope.courseBtnText = "已购课程";
+        $scope.artClickColor = false;
+        $scope.courseClickColor = false;
         wechatUserService.getMyArtOrder(openid, function (data, flag) {
             if (flag == true) {
                 $scope.artOrders = data;
@@ -234,20 +236,32 @@
             }
         });
         $scope.ifArtOpen = function () {
-            $scope.artOpen = !$scope.artOpen;
-            if ($scope.artOpen == true) {
-                $scope.artBtnText = "隐藏已购艺术品";
-            } else {
-                $scope.artBtnText = "展开已购艺术品";
-            }
+            $scope.artClickColor=true;
+            $scope.courseClickColor = false;
+            $scope.artOpen = true;
+            $scope.courseOpen = false;
         };
         $scope.ifCourseOpen = function () {
-            $scope.courseOpen = !$scope.courseOpen;
-            if ($scope.courseOpen == true) {
-                $scope.courseBtnText = "隐藏已购课程";
-            } else {
-                $scope.courseBtnText = "展开已购课程";
+            $scope.courseClickColor = true;
+            $scope.artClickColor = false;
+            $scope.courseOpen = true;
+            $scope.artOpen = false;
+        };
+        $scope.setArtClickColor = function () {
+            if ($scope.artClickColor == true){
+                return "clickColor";
             }
+        };
+        $scope.setCourseClickColor = function () {
+            if ($scope.courseClickColor == true){
+                return "clickColor";
+            }
+        };
+        $scope.artClick = function (art) {
+            $state.go("artworkDesc", {art: art});
+        };
+        $scope.courseClick = function (course) {
+            $state.go("courseDesc", {course: course});
         }
     }]);
 
