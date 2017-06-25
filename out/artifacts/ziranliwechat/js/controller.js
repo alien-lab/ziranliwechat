@@ -8,6 +8,11 @@
         function ($scope, $rootScope, artworkService, toaster, $state, wechatObject, wechatService, rootpath) {
             $scope.title = "艺术品列表";
             $scope.artlist = [];
+            $scope.chooseType = null;
+            $scope.chooseMaterial = null;
+            $scope.chooseSize = null;
+            $scope.btnText = "按条件筛选";
+            $scope.loadAll = true;
             // $scope.$watch("$root.openid",function(newvalue,oldvalue){
             //     console.log("openid changed:",newvalue);
             //     if(newvalue&&newvalue!=""){
@@ -63,6 +68,176 @@
                 console.log("listen on wxready");
                 wxshare();
             });
+            //获取所有条件
+            function loadConditions() {
+                var allTypes = [];
+                var allMaterials = [];
+                var allSizes = [];
+                artworkService.loadTypes(function (data, flag) {
+                    if (flag == true) {
+                        $scope.types = data;
+                        for (var i = 0; i < $scope.types.length; i++) {
+                            var item = {name: "", $isselected: false};
+                            item.name = $scope.types[i];
+                            allTypes.push(item);
+                        }
+                        $scope.typeList = allTypes;
+                    }
+                });
+                artworkService.loadMaterials(function (data, flag) {
+                    if (flag == true) {
+                        $scope.materials = data;
+                        for (var i = 0; i < $scope.materials.length; i++) {
+                            var item = {name: "", $isselected: false};
+                            item.name = $scope.materials[i];
+                            allMaterials.push(item);
+                        }
+                        $scope.materialList = allMaterials;
+                    }
+                });
+                artworkService.loadSizes(function (data, flag) {
+                    if (flag == true) {
+                        $scope.sizes = data;
+                        for (var i = 0; i < $scope.sizes.length; i++) {
+                            var item = {name: "", $isselected: false};
+                            item.name = $scope.sizes[i];
+                            allSizes.push(item);
+                        }
+                        $scope.sizeList = allSizes;
+                    }
+                });
+            }
+
+            loadConditions();
+            //记录选择的类型
+            $scope.setType = setType;
+            function setType(type) {
+                $scope.chooseType = type;//选择的类型
+                type.$isselected = true;
+                for (var i = 0; i < $scope.typeList.length; i++) {
+                    if ($scope.typeList[i] != type) {
+                        $scope.typeList[i].$isselected = false;
+                    }
+                }
+                loadByCondition();
+            }
+
+            //记录选择的尺寸
+            $scope.setSize = setSize;
+            function setSize(size) {
+                $scope.chooseSize = size;//选择的尺寸
+                size.$isselected = true;
+                for (var i = 0; i < $scope.sizeList.length; i++) {
+                    if ($scope.sizeList[i] != size) {
+                        $scope.sizeList[i].$isselected = false;
+                    }
+                }
+                loadByCondition();
+            }
+
+            //记录选择的材质
+            $scope.setMaterial = setMaterial;
+            function setMaterial(material) {
+                $scope.chooseMaterial = material;//选择的材质
+                material.$isselected = true;
+                for (var i = 0; i < $scope.materialList.length; i++) {
+                    if ($scope.materialList[i] != material) {
+                        $scope.materialList[i].$isselected = false;
+                    }
+                }
+                loadByCondition();
+            }
+
+            //选择状态
+            $scope.setClickStyle = function (data) {
+                if (data.$isselected == true) {
+                    return "clickStyle";
+                }
+            };
+            //根据条件获取对应艺术品
+            $scope.loadByCondition = loadByCondition;
+            function loadByCondition() {
+                $rootScope.isloading = true;
+                if ($scope.chooseType != null && $scope.chooseMaterial == null && $scope.chooseSize == null) {
+                    artworkService.loadByType($scope.chooseType.name, function (data, flag) {
+                        $rootScope.isloading = false;
+                        if (flag == true) {
+                            $scope.artlist = data;
+                        }
+                    })
+                }
+                if ($scope.chooseType == null && $scope.chooseMaterial != null && $scope.chooseSize == null) {
+                    artworkService.loadByMaterial($scope.chooseMaterial.name, function (data, flag) {
+                        $rootScope.isloading = false;
+                        if (flag == true) {
+                            $scope.artlist = data;
+                        }
+                    })
+                }
+                if ($scope.chooseType == null && $scope.chooseMaterial == null && $scope.chooseSize != null) {
+                    artworkService.loadBySize($scope.chooseSize.name, function (data, flag) {
+                        $rootScope.isloading = false;
+                        if (flag == true) {
+                            $scope.artlist = data;
+                        }
+                    })
+                }
+                if ($scope.chooseType != null && $scope.chooseMaterial != null && $scope.chooseSize == null) {
+                    artworkService.loadByTypeAndMaterial($scope.chooseType.name, $scope.chooseMaterial.name, function (data, flag) {
+                        $rootScope.isloading = false;
+                        if (flag == true) {
+                            $scope.artlist = data;
+                        }
+                    })
+                }
+                if ($scope.chooseType != null && $scope.chooseMaterial == null && $scope.chooseSize != null) {
+                    artworkService.loadByTypeAndSize($scope.chooseType.name, $scope.chooseSize.name, function (data, flag) {
+                        $rootScope.isloading = false;
+                        if (flag == true) {
+                            $scope.artlist = data;
+                        }
+                    })
+                }
+                if ($scope.chooseType == null && $scope.chooseMaterial != null && $scope.chooseSize != null) {
+                    artworkService.loadByMaterialAndSize($scope.chooseMaterial.name, $scope.chooseSize.name, function (data, flag) {
+                        $rootScope.isloading = false;
+                        if (flag == true) {
+                            $scope.artlist = data;
+                        }
+                    })
+                }
+                if ($scope.chooseType != null && $scope.chooseMaterial != null && $scope.chooseSize != null) {
+                    artworkService.loadByTypeAndMaterialAndSize($scope.chooseType.name, $scope.chooseMaterial.name, $scope.chooseSize.name, function (data, flag) {
+                        $rootScope.isloading = false;
+                        if (flag == true) {
+                            $scope.artlist = data;
+                        }
+                    })
+                }
+            }
+
+            $scope.ifLoadAll = ifLoadAll;
+            function ifLoadAll() {
+                $scope.loadAll = !$scope.loadAll;
+                if ($scope.loadAll == true) {
+                    $scope.btnText = "按条件筛选";
+                    loadArtList();
+                } else if ($scope.loadAll == false) {
+                    $scope.btnText = "展示所有";
+                    if ($scope.chooseType != null) {
+                        $scope.chooseType.$isselected = false;
+                        $scope.chooseType = null;
+                    }
+                    if ($scope.chooseMaterial != null) {
+                        $scope.chooseMaterial.$isselected = false;
+                        $scope.chooseMaterial = null;
+                    }
+                    if ($scope.chooseSize != null) {
+                        $scope.chooseSize.$isselected = false;
+                        $scope.chooseSize = null;
+                    }
+                }
+            }
         }]);
 
     app.controller("artworkDescController", ["$scope", "$state", "$stateParams", "toaster", "rootpath",
@@ -216,13 +391,15 @@
                 $scope.userinfo = false;
             }
         }]);
-    app.controller("wechatUserController", ["$scope", "wechatUserService", "$cookieStore", function ($scope, wechatUserService, $cookieStore) {
+    app.controller("wechatUserController", ["$scope", "wechatUserService", "$cookieStore", "$state", function ($scope, wechatUserService, $cookieStore, $state) {
         var openid = $cookieStore.get("openid");
         console.log(openid);
         $scope.artOpen = false;
-        $scope.artBtnText = "展开已购艺术品";
+        $scope.artBtnText = "已购艺术品";
         $scope.courseOpen = false;
-        $scope.courseBtnText = "展开已购课程";
+        $scope.courseBtnText = "已购课程";
+        $scope.artClickColor = false;
+        $scope.courseClickColor = false;
         wechatUserService.getMyArtOrder(openid, function (data, flag) {
             if (flag == true) {
                 $scope.artOrders = data;
@@ -234,20 +411,32 @@
             }
         });
         $scope.ifArtOpen = function () {
-            $scope.artOpen = !$scope.artOpen;
-            if ($scope.artOpen == true) {
-                $scope.artBtnText = "隐藏已购艺术品";
-            } else {
-                $scope.artBtnText = "展开已购艺术品";
-            }
+            $scope.artClickColor = true;
+            $scope.courseClickColor = false;
+            $scope.artOpen = true;
+            $scope.courseOpen = false;
         };
         $scope.ifCourseOpen = function () {
-            $scope.courseOpen = !$scope.courseOpen;
-            if ($scope.courseOpen == true) {
-                $scope.courseBtnText = "隐藏已购课程";
-            } else {
-                $scope.courseBtnText = "展开已购课程";
+            $scope.courseClickColor = true;
+            $scope.artClickColor = false;
+            $scope.courseOpen = true;
+            $scope.artOpen = false;
+        };
+        $scope.setArtClickColor = function () {
+            if ($scope.artClickColor == true) {
+                return "clickColor";
             }
+        };
+        $scope.setCourseClickColor = function () {
+            if ($scope.courseClickColor == true) {
+                return "clickColor";
+            }
+        };
+        $scope.artClick = function (art) {
+            $state.go("artworkDesc", {art: art});
+        };
+        $scope.courseClick = function (course) {
+            $state.go("courseDesc", {course: course});
         }
     }]);
 
@@ -320,7 +509,7 @@
             $scope.course = $stateParams.course;
             $scope.order = {};
             $scope.onlive = {};
-            if(wechatObject.openid!=""){
+            if (wechatObject.openid != "") {
                 console.log(wechatObject);
                 courseService.loadCourseOrderByUser($scope.course.id, wechatObject.openid, function (data) {
                     if (data) {
@@ -330,9 +519,9 @@
                         }
                     }
                 });
-            }else{
+            } else {
                 $scope.$watch("$root.openid", function (newvalue, oldvalue) {
-                    if(!newvalue)return;
+                    if (!newvalue)return;
                     courseService.loadCourseOrderByUser($scope.course.id, newvalue, function (data) {
                         if (data) {
                             $scope.order = data.courseOrder;

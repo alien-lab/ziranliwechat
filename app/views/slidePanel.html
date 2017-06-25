@@ -1,0 +1,40 @@
+<style>
+    .filterbtn{
+        width:48px;
+        height:48px;
+        background:rgba(0,0,0,0.5);
+        position:fixed;
+        right:5px;
+        top:5px;
+        padding:5px;
+        color:#fff;
+        text-align: center;
+        z-index:999;
+    }
+
+    .icon-filter{
+        font-size:28px !important;
+    }
+
+    .alien.fullscreen{
+        position:fixed;
+        top:0;
+        left:0;
+        background:rgba(255,255,255,0.1);
+        z-index: 1999;
+    }
+    .alien .slidepanel{
+        position:fixed;
+        top:0;
+        right:0;
+        height:100%;
+        background:rgba(0,0,0,0.9);
+        z-index: 2000;
+    }
+</style>
+<div class="filterbtn" ng-click="showpanel()"><i class="iconfont icon-filter"></i></div>
+<div class="alien fullscreen" ng-hide="!show" ng-click="hidepanel()">
+    <div class="slidepanel" ng-click="panelclick($event)">
+
+    </div>
+</div>

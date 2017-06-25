@@ -91,7 +91,7 @@
         // .constant('rootpath',"http://localhost:8082/activitywechat/")
         .constant('tokenUrl', "http://test.moistmedia.net/ziranliserver/api/authenticate")
         .constant('domain', "http://test.moistmedia.net/ziranliserver/")
-        .constant('rootpath', "http://test.moistmedia.net/ziranliwechat/")
+        .constant('rootpath', "http://localhost:8080/ziranliwechat/")
         // .constant('tokenUrl', "http://test.moistmedia.net/ziranliserver/api/authenticate")
         // .constant('domain',"http://test.moistmedia.net/ziranliserver/")
         // .constant('rootpath',"http://test.moistmedia.net/ziranliwechat/")

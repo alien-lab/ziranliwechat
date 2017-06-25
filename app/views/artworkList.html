@@ -3,7 +3,7 @@
         list-style: none;
         margin: 0;
         padding: 0;
-        margin-top: 51px;
+        /*margin-top: 51px;*/
     }
 
     .normal_list li {
@@ -64,47 +64,47 @@
         margin-left: 10px;
     }
 </style>
-<nav class="navbar navbar-default navbar-fixed-top">
-    <div class="navbar-brand">
-        艺术品
-    </div>
-</nav>
-<nav class="navbar navbar-default" style="margin-top: 51px;margin-bottom: 0px;">
-    <div class="container" style="padding:0;">
-        <div type="button" ng-click="ifLoadAll()"
-             style="width:100%;cursor:pointer;height:50px;line-height:50px;text-align:center;margin:0;border: none;">
-            {{btnText}}
+<!--<nav class="navbar navbar-default navbar-fixed-top">-->
+    <!--<div class="navbar-brand">-->
+        <!--艺术品-->
+    <!--</div>-->
+<!--</nav>-->
+<!--<nav class="navbar navbar-default" style="margin-top: 51px;margin-bottom: 0px;">-->
+    <!--<div class="container" style="padding:0;">-->
+        <!--<div type="button" ng-click="ifLoadAll()"-->
+             <!--style="width:100%;cursor:pointer;height:50px;line-height:50px;text-align:center;margin:0;border: none;">-->
+            <!--{{btnText}}-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</nav>-->
+<slide-panel sliderate="0.75" content-id="slidebar">
+
+</slide-panel>
+<div id="slidebar">
+    <div style="color: white;margin-top: 10px;border-bottom: 1px solid #fff;padding: 5px 10px;">
+        <span class="item">按类别</span><br/>
+        <div ng-repeat="type in typeList track by $index"
+             style="display: inline;margin-left: 10px;margin-right: 10px;line-height:2.5;">
+            <span ng-click="setType(type)" ng-class="setClickStyle(type)">{{type.name}}</span>
         </div>
     </div>
-</nav>
-<nav class="navbar navbar-default" ng-if="loadAll==false">
-    <div class="container" style="padding:0;">
-        <div style="width:100%;cursor:pointer;margin:0;border: none;">
-            <div>
-                <strong class="item">按类别</strong><br/>
-                <div ng-repeat="type in typeList track by $index"
-                     style="display: inline;margin-left: 10px;margin-right: 10px;">
-                    <span ng-click="setType(type)" ng-class="setClickStyle(type)">{{type.name}}</span>
-                </div>
-            </div>
-            <div>
-                <strong class="item">按尺寸</strong><br/>
-                <div ng-repeat="size in sizeList track by $index"
-                     style="display: inline;margin-left: 10px;margin-right: 10px;">
-                    <span ng-click="setSize(size)" ng-class="setClickStyle(size)">{{size.name}}</span>
-                </div>
-            </div>
-            <div>
-                <strong class="item">按材质</strong><br/>
-                <div ng-repeat="material in materialList track by $index"
-                     style="display: inline;margin-left: 10px;margin-right: 10px;">
+    <div style="color: white;margin-top: 10px;border-bottom: 1px solid #fff;padding: 5px 10px;">
+        <span class="item">按尺寸</span><br/>
+        <div ng-repeat="size in sizeList track by $index"
+             style="display: inline;margin-left: 10px;margin-right: 10px;line-height:2.5;">
+            <span ng-click="setSize(size)" ng-class="setClickStyle(size)">{{size.name}}</span>
+        </div>
+    </div>
+    <div style="color: white;margin-top: 10px;border-bottom: 1px solid #fff;padding: 5px 10px;">
+        <span class="item">按材质</span><br/>
+        <div ng-repeat="material in materialList track by $index"
+             style="display: inline;margin-left: 10px;margin-right: 10px;line-height:2.5;">
                     <span ng-click="setMaterial(material)"
                           ng-class="setClickStyle(material)">{{material.name}}</span>
-                </div>
-            </div>
         </div>
     </div>
-</nav>
+</div>
+
 <ul class="row normal_list">
     <li class="col-md-12" ng-repeat="art in artlist" ng-click="artClick(art)">
         <div class="list_pic" alien-image
