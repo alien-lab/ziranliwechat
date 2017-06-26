@@ -63,19 +63,26 @@
         margin-bottom: 10px;
         margin-left: 10px;
     }
+
+    .conditions {
+        display: inline;
+        margin-left: 10px;
+        margin-right: 10px;
+        line-height: 2.5;
+    }
 </style>
 <!--<nav class="navbar navbar-default navbar-fixed-top">-->
-    <!--<div class="navbar-brand">-->
-        <!--艺术品-->
-    <!--</div>-->
+<!--<div class="navbar-brand">-->
+<!--艺术品-->
+<!--</div>-->
 <!--</nav>-->
 <!--<nav class="navbar navbar-default" style="margin-top: 51px;margin-bottom: 0px;">-->
-    <!--<div class="container" style="padding:0;">-->
-        <!--<div type="button" ng-click="ifLoadAll()"-->
-             <!--style="width:100%;cursor:pointer;height:50px;line-height:50px;text-align:center;margin:0;border: none;">-->
-            <!--{{btnText}}-->
-        <!--</div>-->
-    <!--</div>-->
+<!--<div class="container" style="padding:0;">-->
+<!--<div type="button" ng-click="ifLoadAll()"-->
+<!--style="width:100%;cursor:pointer;height:50px;line-height:50px;text-align:center;margin:0;border: none;">-->
+<!--{{btnText}}-->
+<!--</div>-->
+<!--</div>-->
 <!--</nav>-->
 <slide-panel sliderate="0.75" content-id="slidebar">
 
@@ -83,29 +90,38 @@
 <div id="slidebar">
     <div style="color: white;margin-top: 10px;border-bottom: 1px solid #fff;padding: 5px 10px;">
         <span class="item">按类别</span><br/>
+        <div class="conditions">
+            <span ng-click="cancelChooseType()" ng-class="setAllType()">全部</span>
+        </div>
         <div ng-repeat="type in typeList track by $index"
-             style="display: inline;margin-left: 10px;margin-right: 10px;line-height:2.5;">
+             class="conditions">
             <span ng-click="setType(type)" ng-class="setClickStyle(type)">{{type.name}}</span>
         </div>
     </div>
     <div style="color: white;margin-top: 10px;border-bottom: 1px solid #fff;padding: 5px 10px;">
         <span class="item">按尺寸</span><br/>
+        <div class="conditions">
+            <span ng-click="cancelChooseSize()" ng-class="setAllSize()">全部</span>
+        </div>
         <div ng-repeat="size in sizeList track by $index"
-             style="display: inline;margin-left: 10px;margin-right: 10px;line-height:2.5;">
+             class="conditions">
             <span ng-click="setSize(size)" ng-class="setClickStyle(size)">{{size.name}}</span>
         </div>
     </div>
     <div style="color: white;margin-top: 10px;border-bottom: 1px solid #fff;padding: 5px 10px;">
         <span class="item">按材质</span><br/>
+        <div class="conditions">
+            <span ng-click="cancelChooseMaterial()" ng-class="setAllMaterial()">全部</span>
+        </div>
         <div ng-repeat="material in materialList track by $index"
-             style="display: inline;margin-left: 10px;margin-right: 10px;line-height:2.5;">
+             class="conditions">
                     <span ng-click="setMaterial(material)"
                           ng-class="setClickStyle(material)">{{material.name}}</span>
         </div>
     </div>
 </div>
 
-<ul class="row normal_list">
+<ul class="row normal_list" ng-if="!noData">
     <li class="col-md-12" ng-repeat="art in artlist" ng-click="artClick(art)">
         <div class="list_pic" alien-image
              image="{{(art.coverImage&&art.coverImage.length>0)?art.coverImage:rootpath+'image/noimg.jpg'}}">
@@ -118,3 +134,4 @@
 
     </li>
 </ul>
+<div ng-if="noData" style="text-align: center;font-size: 20px;margin-top: 200px;">暂时没有相关数据</div>
