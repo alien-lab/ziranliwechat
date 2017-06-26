@@ -55,7 +55,10 @@
         <div class="list_pic"  alien-image image="{{(course.coverImage&&course.coverImage.length>0)?course.coverImage:rootpath+'image/noimg.jpg'}}">&nbsp;</div>
         <div class="list_info" style="background:rgba(240,240,240,0.8);">
             <div class="list_name">{{course.name}}</div>
-            <div class="list_desc"><strong>{{course.courseTime|date:'yyyy-MM-dd HH:mm'}}|{{course.price|currency:'￥'}}|分享价：{{(course.price2>0)?(course.price2|currency:'￥'):'免费'}}</strong></div>
+            <div class="list_desc">
+                <strong>{{course.courseTime|date:'yyyy-MM-dd HH:mm'}}</strong>
+                    <!--|{{course.price|currency:'￥'}}|分享价：{{(course.price2>0)?(course.price2|currency:'￥'):'免费'}}-->
+            </div>
             <div class="list_desc_word">{{course.memo}}</div>
         </div>
     </li>

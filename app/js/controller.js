@@ -718,7 +718,7 @@
                                 // 支付成功后的回调函数
                                 if (res.errMsg == "chooseWXPay:ok") {
                                     courseService.payfinish(wechatObject.openid, courseOrder.id, function (payresult, error) {
-                                        if (!iserr) {
+                                        if (!error) {
                                             toaster.pop("warning", "操作提示", payresult.data.errormsg);
                                             return;
                                         }
