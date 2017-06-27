@@ -14,12 +14,13 @@
             $scope.btnText = "按条件筛选";
             $scope.noData = false;
             // $scope.loadAll = true;
-            // $scope.$watch("$root.openid",function(newvalue,oldvalue){
-            //     console.log("openid changed:",newvalue);
-            //     if(newvalue&&newvalue!=""){
-            //         toaster.pop("info","操作提示","获取到openid:"+newvalue);
-            //     }
-            // },true);
+            $scope.$watch("$root.openid",function(newvalue,oldvalue){
+                console.log("openid changed:",newvalue);
+                if(newvalue&&newvalue!=""){
+                    //toaster.pop("info","操作提示","获取到openid:"+newvalue);
+                    wxshare();
+                }
+            },true);
 
             function loadArtList() {
                 console.log("loaddata");
@@ -43,9 +44,7 @@
             $scope.artClick = function (art) {
                 $state.go("artworkDesc", {art: art});
             }
-            if ($rootScope.wechatObject&&$rootScope.wechatObject.id != "") {
-                wxshare();
-            }
+
             function wxshare() {
                 $scope.shareObject = {
                     shareType: "artworklist",
@@ -72,7 +71,7 @@
 
             $scope.$on("wxready", function () {
                 console.log("listen on wxready");
-                wxshare();
+                //wxshare();
             });
             //获取所有条件
             function loadConditions() {
