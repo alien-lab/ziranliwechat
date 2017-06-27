@@ -139,19 +139,26 @@
                     method: "GET"
                 }).then(function (response) {
                     console.log(response);
-                    wechatObject.id = response.data.id;
-                    wechatObject.openid = response.data.openId;
-                    wechatObject.nickname = response.data.nickName;
-                    wechatObject.icon = response.data.icon;
-                    wechatObject.area = response.data.area;
-                    wechatObject.name = response.data.name;
-                    wechatObject.phone = response.data.phone;
-                    wechatObject.address = response.data.address;
-                    wechatObject.language = response.data.language;
-                    $rootScope.isloading = false;
-                    $rootScope.openid = wechatObject.openid;
-                    $rootScope.wechatObject=wechatObject;
-                    $cookies.putObject("wechatObject", wechatObject);
+                    if(response.data!=""){
+                        wechatObject.id = response.data.id;
+                        wechatObject.openid = response.data.openId;
+                        wechatObject.nickname = response.data.nickName;
+                        wechatObject.icon = response.data.icon;
+                        wechatObject.area = response.data.area;
+                        wechatObject.name = response.data.name;
+                        wechatObject.phone = response.data.phone;
+                        wechatObject.address = response.data.address;
+                        wechatObject.language = response.data.language;
+                        $rootScope.isloading = false;
+                        $rootScope.openid = wechatObject.openid;
+                        $rootScope.wechatObject=wechatObject;
+                        $cookies.putObject("wechatObject", wechatObject);
+                    }else{
+                        _this.getWechatUserCookies();
+                    }
+
+
+
                 });
             }
 

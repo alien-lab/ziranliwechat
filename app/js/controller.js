@@ -353,40 +353,44 @@
             $scope.rootpath = rootpath;
             $scope.art = $stateParams.art;
 
-            if ($scope.art == null) {
-                var artId = $location.search().shareid;
 
-                if (!artId) {
-                    var posstate = $location.$$absUrl.indexOf("state=");
-                    if (posstate > 0) {
-                        var stateurl = $location.$$absUrl.substring(posstate + 6);
-                        var nextPos = stateurl.indexOf("#!");
-                        var state = stateurl.substring(0, nextPos);
-                        if (state.length > 0) {
-                            artId = state;
+
+            $scope.$watch("$root.openid",function(newvalue,oldvalue){
+                if(!newvalue) return;
+                $scope.user = $rootScope.wechatObject;
+                if ($scope.art == null) {
+                    var artId = $location.search().shareid;
+                    if (!artId) {
+                        var posstate = $location.$$absUrl.indexOf("state=");
+                        if (posstate > 0) {
+                            var stateurl = $location.$$absUrl.substring(posstate + 6);
+                            var nextPos = stateurl.indexOf("#!");
+                            var state = stateurl.substring(0, nextPos);
+                            if (state.length > 0) {
+                                artId = state;
+                            }
                         }
                     }
+                    if (artId) {
+                        artworkService.loadArtwork(artId, function (result, flag) {
+                            if (!flag) {
+                                toaster.pop('error', "错误提示", "获取艺术品数据出错。");
+                            }
+                            console.log("loadArtwork", result);
+                            $scope.art = result.data;
+                            loadImages($scope.art.id);
+                            //$scope.shareObject.shareContentKey=$scope.art.id;
+                            //$scope.shareObject.shareLink=wechatService.getAuthUrl(rootpath+"#!/artworkDesc",$scope.art.id)
+                            console.log("load artwork share");
+                            wxshare();
+                        });
+                    }
+                } else {
+                    loadImages($scope.art.id);
+                    wxshare();
+                    console.log("direct artwork share");
                 }
-                if (artId) {
-                    artworkService.loadArtwork(artId, function (result, flag) {
-                        if (!flag) {
-                            toaster.pop('error', "错误提示", "获取艺术品数据出错。");
-                        }
-                        console.log("loadArtwork", result);
-                        $scope.art = result.data;
-                        loadImages($scope.art.id);
-                        //$scope.shareObject.shareContentKey=$scope.art.id;
-                        //$scope.shareObject.shareLink=wechatService.getAuthUrl(rootpath+"#!/artworkDesc",$scope.art.id)
-                        console.log("load artwork share");
-                        wxshare();
-                    });
-                }
-            } else {
-                loadImages($scope.art.id);
-                wxshare();
-                console.log("direct artwork share");
-            }
-
+            },true);
 
             function wxshare() {
                 $scope.shareObject = {
@@ -417,7 +421,7 @@
                 //         "menuItem:share:timeline",
                 //         "menuItem:favorite"]
                 // });
-                wxshare();
+                //wxshare();
             });
 
             function loadImages(artId) {
@@ -434,7 +438,7 @@
                 $state.go("artworkList");
             }
 
-            $scope.user = $rootScope.wechatObject;
+
             // $scope.$watch("user",function(v1,v2){
             //     console.log("user",v1);
             //     $scope.user=wechatObject;
