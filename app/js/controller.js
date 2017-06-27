@@ -500,24 +500,35 @@
     app.controller("wechatUserController", ["$scope", "wechatUserService", "$cookies", "$state","$rootScope", function ($scope, wechatUserService, $cookies, $state,$rootScope) {
         // var openid = $cookies.getObject("wechatUser").openid;
         //console.log(openid);
-        $scope.artOpen = false;
+        $scope.artOpen = true;
         $scope.artBtnText = "已购艺术品";
         $scope.courseOpen = false;
         $scope.courseBtnText = "已购课程";
-        $scope.artClickColor = false;
+        $scope.artClickColor = true;
         $scope.courseClickColor = false;
-
+        $scope.noArtWork = false;
+        $scope.noCourse = false;
         $scope.$watch("$root.openid",function(newvalue){
             if(!newvalue)return;
             var openid=$rootScope.wechatObject.openid;
             wechatUserService.getMyArtOrder(openid, function (data, flag) {
                 if (flag == true) {
                     $scope.artOrders = data;
+                    if ($scope.artOrders.length == 0) {
+                        $scope.noArtWork = true;
+                    } else {
+                        $scope.noArtWork = false;
+                    }
                 }
             });
             wechatUserService.getMyCourseOrder(openid, function (data, flag) {
                 if (flag == true) {
                     $scope.courseOrders = data;
+                    if ($scope.courseOrders.length == 0) {
+                        $scope.noCourse = true;
+                    } else {
+                        $scope.noCourse = false;
+                    }
                 }
             });
         });
