@@ -12,7 +12,8 @@
             $scope.chooseMaterial = null;
             $scope.chooseSize = null;
             $scope.btnText = "按条件筛选";
-            $scope.loadAll = true;
+            $scope.noData = false;
+            // $scope.loadAll = true;
             // $scope.$watch("$root.openid",function(newvalue,oldvalue){
             //     console.log("openid changed:",newvalue);
             //     if(newvalue&&newvalue!=""){
@@ -29,6 +30,11 @@
                         toaster.pop('error', "错误提示", data.data.error);
                     }
                     $scope.artlist = data.data;
+                    if ($scope.artlist.length == 0) {
+                        $scope.noData = true;
+                    } else {
+                        $scope.noData = false;
+                    }
                 });
             }
 
@@ -37,7 +43,7 @@
             $scope.artClick = function (art) {
                 $state.go("artworkDesc", {art: art});
             }
-            if (wechatObject.id != "") {
+            if ($rootScope.wechatObject&&$rootScope.wechatObject.id != "") {
                 wxshare();
             }
             function wxshare() {
@@ -45,7 +51,7 @@
                     shareType: "artworklist",
                     shareContentKey: "0",
                     user: {
-                        id: wechatObject.id
+                        id: $rootScope.wechatObject.id
                     },
                     shareTime: new Date(),
                     shareLink: rootpath + "#!/artworkList"
@@ -54,12 +60,12 @@
                 if ($scope.artlist.length > 0) {
                     img = $scope.artlist[0].coverImage;
                 }
-                console.log("artlist wxshare", $scope.shareObject, wechatObject);
+                console.log("artlist wxshare", $scope.shareObject, $rootScope.wechatObject);
                 wechatService.refreshShare({
                     title: "自然力艺术品展", // 分享标题
                     link: $scope.shareObject.shareLink,
                     imgUrl: img, // 分享图标
-                    desc: wechatObject.nickname + "邀请您来一起看看"
+                    desc: $rootScope.wechatObject.nickname + "邀请您来一起看看"
                 }, $scope.shareObject);
                 return;
             }
@@ -112,40 +118,76 @@
             //记录选择的类型
             $scope.setType = setType;
             function setType(type) {
-                $scope.chooseType = type;//选择的类型
-                type.$isselected = true;
-                for (var i = 0; i < $scope.typeList.length; i++) {
-                    if ($scope.typeList[i] != type) {
-                        $scope.typeList[i].$isselected = false;
+                if ($scope.chooseType != type) {
+                    $scope.chooseType = type;//选择的类型
+                    type.$isselected = true;
+                    for (var i = 0; i < $scope.typeList.length; i++) {
+                        if ($scope.typeList[i] != type) {
+                            $scope.typeList[i].$isselected = false;
+                        }
                     }
+                    loadByCondition();
                 }
-                loadByCondition();
+            }
+
+            //选择全部类型
+            $scope.cancelChooseType = cancelChooseType;
+            function cancelChooseType() {
+                if ($scope.chooseType != null) {
+                    $scope.chooseType.$isselected = false;
+                    $scope.chooseType = null;
+                    loadByCondition();
+                }
             }
 
             //记录选择的尺寸
             $scope.setSize = setSize;
             function setSize(size) {
-                $scope.chooseSize = size;//选择的尺寸
-                size.$isselected = true;
-                for (var i = 0; i < $scope.sizeList.length; i++) {
-                    if ($scope.sizeList[i] != size) {
-                        $scope.sizeList[i].$isselected = false;
+                if ($scope.chooseSize != size) {
+                    $scope.chooseSize = size;//选择的尺寸
+                    size.$isselected = true;
+                    for (var i = 0; i < $scope.sizeList.length; i++) {
+                        if ($scope.sizeList[i] != size) {
+                            $scope.sizeList[i].$isselected = false;
+                        }
                     }
+                    loadByCondition();
                 }
-                loadByCondition();
+            }
+
+            //选择全部尺寸
+            $scope.cancelChooseSize = cancelChooseSize;
+            function cancelChooseSize() {
+                if ($scope.chooseSize != null) {
+                    $scope.chooseSize.$isselected = false;
+                    $scope.chooseSize = null;
+                    loadByCondition();
+                }
             }
 
             //记录选择的材质
             $scope.setMaterial = setMaterial;
             function setMaterial(material) {
-                $scope.chooseMaterial = material;//选择的材质
-                material.$isselected = true;
-                for (var i = 0; i < $scope.materialList.length; i++) {
-                    if ($scope.materialList[i] != material) {
-                        $scope.materialList[i].$isselected = false;
+                if ($scope.chooseMaterial != material) {
+                    $scope.chooseMaterial = material;//选择的材质
+                    material.$isselected = true;
+                    for (var i = 0; i < $scope.materialList.length; i++) {
+                        if ($scope.materialList[i] != material) {
+                            $scope.materialList[i].$isselected = false;
+                        }
                     }
+                    loadByCondition();
                 }
-                loadByCondition();
+            }
+
+            //选择全部材质
+            $scope.cancelChooseMaterial = cancelChooseMaterial;
+            function cancelChooseMaterial() {
+                if ($scope.chooseMaterial != null) {
+                    $scope.chooseMaterial.$isselected = false;
+                    $scope.chooseMaterial = null;
+                    loadByCondition();
+                }
             }
 
             //选择状态
@@ -154,6 +196,32 @@
                     return "clickStyle";
                 }
             };
+
+
+            //全部类型状态
+            $scope.setAllType = setAllType;
+            function setAllType() {
+                if ($scope.chooseType == null) {
+                    return "clickStyle"
+                }
+            }
+
+            //全部尺寸状态
+            $scope.setAllSize = setAllSize;
+            function setAllSize() {
+                if ($scope.chooseSize == null) {
+                    return "clickStyle"
+                }
+            }
+
+            //全部材质状态
+            $scope.setAllMaterial = setAllMaterial;
+            function setAllMaterial() {
+                if ($scope.chooseMaterial == null) {
+                    return "clickStyle"
+                }
+            }
+
             //根据条件获取对应艺术品
             $scope.loadByCondition = loadByCondition;
             function loadByCondition() {
@@ -163,6 +231,11 @@
                         $rootScope.isloading = false;
                         if (flag == true) {
                             $scope.artlist = data;
+                            if ($scope.artlist.length == 0) {
+                                $scope.noData = true;
+                            } else {
+                                $scope.noData = false;
+                            }
                         }
                     })
                 }
@@ -171,6 +244,11 @@
                         $rootScope.isloading = false;
                         if (flag == true) {
                             $scope.artlist = data;
+                            if ($scope.artlist.length == 0) {
+                                $scope.noData = true;
+                            } else {
+                                $scope.noData = false;
+                            }
                         }
                     })
                 }
@@ -179,6 +257,11 @@
                         $rootScope.isloading = false;
                         if (flag == true) {
                             $scope.artlist = data;
+                            if ($scope.artlist.length == 0) {
+                                $scope.noData = true;
+                            } else {
+                                $scope.noData = false;
+                            }
                         }
                     })
                 }
@@ -187,6 +270,11 @@
                         $rootScope.isloading = false;
                         if (flag == true) {
                             $scope.artlist = data;
+                            if ($scope.artlist.length == 0) {
+                                $scope.noData = true;
+                            } else {
+                                $scope.noData = false;
+                            }
                         }
                     })
                 }
@@ -195,6 +283,11 @@
                         $rootScope.isloading = false;
                         if (flag == true) {
                             $scope.artlist = data;
+                            if ($scope.artlist.length == 0) {
+                                $scope.noData = true;
+                            } else {
+                                $scope.noData = false;
+                            }
                         }
                     })
                 }
@@ -203,6 +296,11 @@
                         $rootScope.isloading = false;
                         if (flag == true) {
                             $scope.artlist = data;
+                            if ($scope.artlist.length == 0) {
+                                $scope.noData = true;
+                            } else {
+                                $scope.noData = false;
+                            }
                         }
                     })
                 }
@@ -211,33 +309,42 @@
                         $rootScope.isloading = false;
                         if (flag == true) {
                             $scope.artlist = data;
+                            if ($scope.artlist.length == 0) {
+                                $scope.noData = true;
+                            } else {
+                                $scope.noData = false;
+                            }
                         }
                     })
                 }
-            }
-
-            $scope.ifLoadAll = ifLoadAll;
-            function ifLoadAll() {
-                $scope.loadAll = !$scope.loadAll;
-                if ($scope.loadAll == true) {
-                    $scope.btnText = "按条件筛选";
+                if ($scope.chooseType == null && $scope.chooseMaterial == null && $scope.chooseSize == null) {
                     loadArtList();
-                } else if ($scope.loadAll == false) {
-                    $scope.btnText = "展示所有";
-                    if ($scope.chooseType != null) {
-                        $scope.chooseType.$isselected = false;
-                        $scope.chooseType = null;
-                    }
-                    if ($scope.chooseMaterial != null) {
-                        $scope.chooseMaterial.$isselected = false;
-                        $scope.chooseMaterial = null;
-                    }
-                    if ($scope.chooseSize != null) {
-                        $scope.chooseSize.$isselected = false;
-                        $scope.chooseSize = null;
-                    }
                 }
             }
+
+
+            // $scope.ifLoadAll = ifLoadAll;
+            // function ifLoadAll() {
+            //     $scope.loadAll = !$scope.loadAll;
+            //     if ($scope.loadAll == true) {
+            //         $scope.btnText = "按条件筛选";
+            //         loadArtList();
+            //     } else if ($scope.loadAll == false) {
+            //         $scope.btnText = "展示所有";
+            //         if ($scope.chooseType != null) {
+            //             $scope.chooseType.$isselected = false;
+            //             $scope.chooseType = null;
+            //         }
+            //         if ($scope.chooseMaterial != null) {
+            //             $scope.chooseMaterial.$isselected = false;
+            //             $scope.chooseMaterial = null;
+            //         }
+            //         if ($scope.chooseSize != null) {
+            //             $scope.chooseSize.$isselected = false;
+            //             $scope.chooseSize = null;
+            //         }
+            //     }
+            // }
         }]);
 
     app.controller("artworkDescController", ["$scope", "$state", "$stateParams", "toaster", "rootpath",
@@ -248,7 +355,7 @@
             $scope.art = $stateParams.art;
 
             if ($scope.art == null) {
-                var artId = $location.search().art;
+                var artId = $location.search().shareid;
 
                 if (!artId) {
                     var posstate = $location.$$absUrl.indexOf("state=");
@@ -287,7 +394,7 @@
                     shareType: "artwork",
                     shareContentKey: $scope.art.id,
                     user: {
-                        id: wechatObject.id
+                        id: $rootScope.wechatObject.id
                     },
                     shareTime: new Date(),
                     shareLink: rootpath + "#!/artworkDesc?shareid=" + $scope.art.id
@@ -328,7 +435,7 @@
                 $state.go("artworkList");
             }
 
-            $scope.user = wechatObject;
+            $scope.user = $rootScope.wechatObject;
             // $scope.$watch("user",function(v1,v2){
             //     console.log("user",v1);
             //     $scope.user=wechatObject;
@@ -344,7 +451,7 @@
             $scope.buyArt = function () {
                 $scope.userinfo = false;
                 var data = {
-                    openid: wechatObject.openid,
+                    openid: $rootScope.wechatObject.openid,
                     artId: $scope.art.id,
                     address: $scope.user.address,
                     contact: $scope.user.name,
@@ -366,7 +473,7 @@
                         success: function (res) {
                             // 支付成功后的回调函数
                             if (res.errMsg == "chooseWXPay:ok") {
-                                artworkService.payfinish(wechatObject.openid, artworkOrder.id, function (payresult, error) {
+                                artworkService.payfinish($rootScope.wechatObject.openid, artworkOrder.id, function (payresult, error) {
                                     if (!iserr) {
                                         toaster.pop("warning", "操作提示", payresult.data.errormsg);
                                         return;
@@ -391,25 +498,31 @@
                 $scope.userinfo = false;
             }
         }]);
-    app.controller("wechatUserController", ["$scope", "wechatUserService", "$cookieStore", "$state", function ($scope, wechatUserService, $cookieStore, $state) {
-        var openid = $cookieStore.get("openid");
-        console.log(openid);
+    app.controller("wechatUserController", ["$scope", "wechatUserService", "$cookies", "$state","$rootScope", function ($scope, wechatUserService, $cookies, $state,$rootScope) {
+        // var openid = $cookies.getObject("wechatUser").openid;
+        //console.log(openid);
         $scope.artOpen = false;
         $scope.artBtnText = "已购艺术品";
         $scope.courseOpen = false;
         $scope.courseBtnText = "已购课程";
         $scope.artClickColor = false;
         $scope.courseClickColor = false;
-        wechatUserService.getMyArtOrder(openid, function (data, flag) {
-            if (flag == true) {
-                $scope.artOrders = data;
-            }
+
+        $scope.$watch("$root.openid",function(newvalue){
+            if(!newvalue)return;
+            var openid=$rootScope.wechatObject.openid;
+            wechatUserService.getMyArtOrder(openid, function (data, flag) {
+                if (flag == true) {
+                    $scope.artOrders = data;
+                }
+            });
+            wechatUserService.getMyCourseOrder(openid, function (data, flag) {
+                if (flag == true) {
+                    $scope.courseOrders = data;
+                }
+            });
         });
-        wechatUserService.getMyCourseOrder(openid, function (data, flag) {
-            if (flag == true) {
-                $scope.courseOrders = data;
-            }
-        });
+
         $scope.ifArtOpen = function () {
             $scope.artClickColor = true;
             $scope.courseClickColor = false;
@@ -468,7 +581,7 @@
             $scope.courseClick = function (course) {
                 $state.go("courseDesc", {course: course});
             }
-            if (wechatObject.id != "") {
+            if ($rootScope.wechatObject&&$rootScope.wechatObject.id != "") {
                 wxshare();
             }
             function wxshare() {
@@ -476,7 +589,7 @@
                     shareType: "courselist",
                     shareContentKey: "0",
                     user: {
-                        id: wechatObject.id
+                        id: $rootScope.wechatObject.id
                     },
                     shareTime: new Date(),
                     shareLink: rootpath + "#!/courseList"
@@ -485,12 +598,12 @@
                 if ($scope.courselist.length > 0) {
                     img = $scope.courselist[0].coverImage;
                 }
-                console.log("courseList wxshare", $scope.shareObject, wechatObject);
+                console.log("courseList wxshare", $scope.shareObject, $rootScope.wechatObject);
                 wechatService.refreshShare({
                     title: "自然力课程", // 分享标题
                     link: $scope.shareObject.shareLink,
                     imgUrl: img, // 分享图标
-                    desc: wechatObject.nickname + "邀请您来一起看看"
+                    desc: $rootScope.wechatObject.nickname + "邀请您来一起看看"
                 }, $scope.shareObject);
                 return;
             }
@@ -509,9 +622,9 @@
             $scope.course = $stateParams.course;
             $scope.order = {};
             $scope.onlive = {};
-            if (wechatObject.openid != "") {
+            if ($rootScope.wechatObject&&$rootScope.wechatObject.openid != "") {
                 console.log(wechatObject);
-                courseService.loadCourseOrderByUser($scope.course.id, wechatObject.openid, function (data) {
+                courseService.loadCourseOrderByUser($scope.course.id, $rootScope.wechatObject.openid, function (data) {
                     if (data) {
                         $scope.order = data.courseOrder;
                         if (data.onlive) {
@@ -522,42 +635,44 @@
             } else {
                 $scope.$watch("$root.openid", function (newvalue, oldvalue) {
                     if (!newvalue)return;
-                    courseService.loadCourseOrderByUser($scope.course.id, newvalue, function (data) {
-                        if (data) {
-                            $scope.order = data.courseOrder;
-                            if (data.onlive) {
-                                $scope.onlive = data.onlive;
+                    if ($scope.course == null) {
+                        var courseId = $location.search().shareid;
+                        if (!courseId) {
+                            var posstate = $location.$$absUrl.indexOf("state=");
+                            if (posstate > 0) {
+                                var stateurl = $location.$$absUrl.substring(posstate + 6);
+                                var nextPos = stateurl.indexOf("#!");
+                                var state = stateurl.substring(0, nextPos);
+                                if (state.length > 0) {
+                                    courseId = state;
+                                }
                             }
                         }
-                    });
+                        if (courseId) {
+                            courseService.loadCourse(courseId, function (result, flag) {
+                                if (!flag) {
+                                    toaster.pop('error', "错误提示", "获取艺术品数据出错。");
+                                }
+                                $scope.course = result.data;
+                                wxshare();
+                                courseService.loadCourseOrderByUser($scope.course.id, newvalue, function (data) {
+                                    if (data) {
+                                        $scope.order = data.courseOrder;
+                                        if (data.onlive) {
+                                            $scope.onlive = data.onlive;
+                                        }
+                                    }
+                                });
+                            });
+                        }
+                    } else {
+                        wxshare();
+                    }
+
                 }, true);
             }
 
-            if ($scope.course == null) {
-                var courseId = $location.search().course;
-                if (!courseId) {
-                    var posstate = $location.$$absUrl.indexOf("state=");
-                    if (posstate > 0) {
-                        var stateurl = $location.$$absUrl.substring(posstate + 6);
-                        var nextPos = stateurl.indexOf("#!");
-                        var state = stateurl.substring(0, nextPos);
-                        if (state.length > 0) {
-                            courseId = state;
-                        }
-                    }
-                }
-                if (courseId) {
-                    courseService.loadCourse(courseId, function (result, flag) {
-                        if (!flag) {
-                            toaster.pop('error', "错误提示", "获取艺术品数据出错。");
-                        }
-                        $scope.course = result.data;
-                        wxshare();
-                    });
-                }
-            } else {
-                wxshare();
-            }
+
 
             $scope.goList = function () {
                 $state.go("courseList");
@@ -568,7 +683,7 @@
                     shareType: "course",
                     shareContentKey: $scope.course.id,
                     user: {
-                        id: wechatObject.id
+                        id: $rootScope.wechatObject.id
                     },
                     shareTime: new Date(),
                     shareLink: rootpath + "#!/courseDesc?shareid=" + $scope.course.id
@@ -587,7 +702,7 @@
 
             $scope.buy = function () {
                 var data = {
-                    openid: wechatObject.openid,
+                    openid: $rootScope.wechatObject.openid,
                     courseId: $scope.course.id
                 }
                 courseService.buyCourse(data, function (result, flag) {
@@ -610,8 +725,8 @@
                             success: function (res) {
                                 // 支付成功后的回调函数
                                 if (res.errMsg == "chooseWXPay:ok") {
-                                    courseService.payfinish(wechatObject.openid, courseOrder.id, function (payresult, error) {
-                                        if (!iserr) {
+                                    courseService.payfinish($rootScope.wechatObject.openid, courseOrder.id, function (payresult, error) {
+                                        if (!error) {
                                             toaster.pop("warning", "操作提示", payresult.data.errormsg);
                                             return;
                                         }

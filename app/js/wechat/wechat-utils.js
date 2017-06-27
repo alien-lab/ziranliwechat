@@ -2,9 +2,10 @@
     'use strict';
 
     var app = angular.module("naturalForce");
-    app.service("wechatService", ["$http", "domain", "wechatappid", "wechatObject", "$rootScope", "rootpath", "$cookieStore",
-        function ($http, domain, wechatappid, wechatObject, $rootScope, rootpath, $cookieStore) {
-            this.wechatConfig = function () {
+    app.service("wechatService", ["$http", "domain", "wechatappid", "wechatObject", "$rootScope", "rootpath", "$cookies",
+        function ($http, domain, wechatappid, wechatObject, $rootScope, rootpath, $cookies) {
+        var _this=this;
+        this.wechatConfig = function () {
                 $http({
                     url: domain + "api/jsapi?url=" + encodeURIComponent(window.location.href),
                     method: "GET"
@@ -110,6 +111,28 @@
 
             }
 
+            this.getWechatUser=function(code){
+                var user=_that.getWechatUserCookies();
+                if(user&&user.openid){
+                    wechatObject=user;
+                    $rootScope.openid = wechatObject.openid;
+                    $rootScope.wechatObject=wechatObject;
+                }else{
+                    _this.loadWechatUser(code);
+                }
+            }
+            this.getWechatUserCookies=function(){
+                var o=$cookies.getObject("wechatObject");
+                console.log("cookies wechatobject",o);
+                if(o&&o.openid){
+                    $rootScope.isloading = false;
+                    wechatObject=o;
+                    $rootScope.openid = wechatObject.openid;
+                    $rootScope.wechatObject=wechatObject;
+                    return o;
+                }
+                return null;
+            }
             this.loadWechatUser = function (code) {
                 $http({
                     url: domain + "api/getuserinfo?code=" + code,
@@ -127,9 +150,8 @@
                     wechatObject.language = response.data.language;
                     $rootScope.isloading = false;
                     $rootScope.openid = wechatObject.openid;
-                    $cookieStore.put("openid", wechatObject.openid);
-                    console.log($rootScope.openid);
-                    console.log($cookieStore.get("openid"));
+                    $rootScope.wechatObject=wechatObject;
+                    $cookies.putObject("wechatObject", wechatObject);
                 });
             }
 
@@ -138,9 +160,9 @@
                 wechatObject.nickname = "临时用户";
                 wechatObject.icon = "image/logo.jpg";
                 $rootScope.openid = wechatObject.openid;
+                $rootScope.wechatObject=wechatObject;
                 $rootScope.isloading = false;
-                $cookieStore.put("openid", wechatObject.openid);
-                console.log($cookieStore.get("openid"));
+                $cookies.put("wechatObject", wechatObject);
             }
 
             this.getAuthUrl = function (url, state) {
