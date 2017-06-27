@@ -57,22 +57,36 @@
                 if (runmodal == "dev") {//调试模式模拟身份
                     wechatService.testUser();
                 } else {
-                    var url = $location.$$absUrl;
-                    var pos = url.indexOf("code=");
-                    if (pos > 0) {
-                        url = url.substring(pos + 5);
-                        console.log(url);
-                        var nextPos = url.indexOf("&");
-                        var code = url.substring(0, nextPos);
-                        console.log(code);
+                    console.log(window.location.search);
+                    var search = window.location.search;
+                    search=search.substring(1);
+                    var params=search.split("&");
+                    var paramObject={};
+                    for(var i=0;params&&i<params.length;i++){
+                        var s=params[i];
+                        var p=s.split("=");
+                        if(p&&p[0]){
+                            paramObject[p[0]]=p[1];
+                        }
+                    }
+                    console.log("url paramObject",paramObject);
+                    if (search.indexOf("code=")>=0) {
                         console.log("system start! find code param.invoke code user method");
-                        wechatService.loadWechatUser(code);
+                        if(paramObject["code"]){
+                            console.log("code value is "+paramObject["code"]);
+                            wechatService.loadWechatUser(paramObject["code"]);
+                        }
                     } else {
                         //alert("没有从微信跳转");
-                        var shareid = $location.search().shareid;
-                        console.log()
-                        var link = wechatService.getAuthUrl($location.$$absUrl, shareid);
-                        window.location.href = link;
+                        var shareid = paramObject["shareid"];
+                        if(shareid==null){
+                            shareid=$location.search().shareid;
+                        }
+                        var wechatuser=wechatService.getWechatUserCookies();
+                        if(wechatuser==null){
+                            var link = wechatService.getAuthUrl($location.$$absUrl, shareid);
+                            window.location.href = link;
+                        }
                     }
                 }
             });
@@ -97,6 +111,6 @@
         .constant('rootpath',"http://test.moistmedia.net/ziranliwechat/")
         .constant('homePage', "artworkList")
         .constant('wechatappid', "wx83f372e021582278")
-        .constant('runmodal', "dev")
+        .constant('runmodal', "prod")
     ;
 })();
