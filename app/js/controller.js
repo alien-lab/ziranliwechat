@@ -638,6 +638,9 @@
             $scope.onlive = {};
             if ($rootScope.wechatObject&&$rootScope.wechatObject.openid != "") {
                 console.log(wechatObject);
+                if($scope.course){
+                    wxshare();
+                }
                 courseService.loadCourseOrderByUser($scope.course.id, $rootScope.wechatObject.openid, function (data) {
                     if (data) {
                         $scope.order = data.courseOrder;
