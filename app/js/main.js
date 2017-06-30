@@ -111,6 +111,6 @@
         .constant('rootpath',"http://test.moistmedia.net/ziranliwechat/")
         .constant('homePage', "artworkList")
         .constant('wechatappid', "wx83f372e021582278")
-        .constant('runmodal', "prod")
+        .constant('runmodal', "dev")
     ;
 })();

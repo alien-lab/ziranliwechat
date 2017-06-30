@@ -27,10 +27,33 @@
         height: auto;
     }
 
+    .normal_list .list_name {
+        width: 100%;
+        text-align: center;
+        padding: 10px 0;
+        font-size: 180%;
+        font-weight: 500;
+    }
+
     .normal_list .list_desc {
         width: 100%;
         text-align: center;
         padding: 0 5px;
+    }
+
+    .normal_list .list_desc_word {
+        padding: 10px;
+        text-align: left;
+        text-indent: 2em;
+        display: -webkit-box;
+        line-height: 1.8;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
+    }
+
+    .list {
+        margin-bottom: 50px;
     }
 
     .clickColor {
@@ -46,32 +69,44 @@
         <i class="glyphicon glyphicon-arrow-left"></i>
     </div>
 </nav>
-<ul class="row normal_list" ng-if="artOpen&&!noArtWork">
-    <li class="col-md-12" ng-repeat="artOrder in artOrders" ng-click="artClick(artOrder.artwork)">
-        <div class="list_pic" alien-image
-             image="{{(artOrder.artwork.coverImage&&artOrder.artwork.coverImage.length>0)?artOrder.artwork.coverImage:rootpath+'image/noimg.jpg'}}">
-            &nbsp;</div>
-        <div class="list_info" style="background:rgba(240,240,240,0.8);">
-            <div class="list_desc"><strong>{{artOrder.artwork.name}}|{{artOrder.payTime|date:"yyyy-MM-dd HH:mm"}}|
-                {{artOrder.artwork.price|currency:'￥'}}|{{artOrder.payStatus}}</strong>
+<div class="list">
+    <ul class="row normal_list" ng-if="artOpen&&!noArtWork">
+        <li class="col-md-12" ng-repeat="artOrder in artOrders" ng-click="artClick(artOrder.artwork)">
+            <div class="list_pic" alien-image
+                 image="{{(artOrder.artwork.coverImage&&artOrder.artwork.coverImage.length>0)?artOrder.artwork.coverImage:rootpath+'image/noimg.jpg'}}">
+                &nbsp;</div>
+            <div class="list_info" style="background:rgba(240,240,240,0.8);">
+                <div class="list_name">{{artOrder.artwork.name}}</div>
+                <div class="list_desc"><strong>{{artOrder.artwork.author}}|{{artOrder.artwork.year}}|{{artOrder.artwork.price|currency:'￥'}}</strong>
+                </div>
+                <div class="list_desc"><strong><span ng-if="artOrder.payStatus=='已支付'">支付时间：{{artOrder.payTime|date:"yyyy-MM-dd HH:mm"}}|</span>
+                    {{artOrder.payStatus}}</strong>
+                </div>
+                <div class="list_desc_word">{{artOrder.artwork.memo}}</div>
             </div>
-        </div>
 
-    </li>
-</ul>
-<ul class="row normal_list" ng-if="courseOpen&&!noCourse">
-    <li class="col-md-12" ng-repeat="courseOrder in courseOrders" ng-click="courseClick(courseOrder.course)">
-        <div class="list_pic" alien-image
-             image="{{(courseOrder.course.coverImage&&courseOrder.course.coverImage.length>0)?courseOrder.course.coverImage:rootpath+'image/noimg.jpg'}}">
-            &nbsp;</div>
-        <div class="list_info" style="background:rgba(240,240,240,0.8);">
-            <div class="list_desc"><strong>{{courseOrder.course.name}}|{{courseOrder.payTime|date:"yyyy-MM-dd HH:mm"}}|
-                {{courseOrder.course.price|currency:'￥'}}|{{courseOrder.payStatus}}</strong>
+        </li>
+    </ul>
+    <ul class="row normal_list" ng-if="courseOpen&&!noCourse">
+        <li class="col-md-12" ng-repeat="courseOrder in courseOrders" ng-click="courseClick(courseOrder.course)">
+            <div class="list_pic" alien-image
+                 image="{{(courseOrder.course.coverImage&&courseOrder.course.coverImage.length>0)?courseOrder.course.coverImage:rootpath+'image/noimg.jpg'}}">
+                &nbsp;</div>
+            <div class="list_info" style="background:rgba(240,240,240,0.8);">
+                <div class="list_name">{{courseOrder.course.name}}</div>
+                <div class="list_desc">
+                    <strong>课程时间：{{courseOrder.course.courseTime|date:'yyyy-MM-dd HH:mm'}}</strong>
+                    <!--|{{courseOrder.course.price|currency:'￥'}}|分享价：{{(courseOrder.course.price2>0)?(courseOrder.course.price2|currency:'￥'):'免费'}}-->
+                </div>
+                <div class="list_desc"><strong><span ng-if="courseOrder.payStatus=='已支付'">支付时间：{{courseOrder.payTime|date:"yyyy-MM-dd HH:mm"}}|</span>
+                    {{courseOrder.payStatus}}</strong>
+                </div>
+                <div class="list_desc_word">{{courseOrder.course.memo}}</div>
             </div>
-        </div>
 
-    </li>
-</ul>
+        </li>
+    </ul>
+</div>
 <div ng-if="artOpen&&noArtWork" style="text-align: center;font-size: 20px;margin-top: 200px;">您还没有购买艺术品</div>
 <div ng-if="courseOpen&&noCourse" style="text-align: center;font-size: 20px;margin-top: 200px;">您还没有购买课程</div>
 <nav class="navbar navbar-default navbar-fixed-bottom">
