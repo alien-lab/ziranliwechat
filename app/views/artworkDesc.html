@@ -9,7 +9,7 @@
     #container{
         margin-top:51px;
         margin-bottom:51px;
-        padding:5px;
+        padding:5px 20px;
     }
 </style>
 
@@ -39,12 +39,12 @@
 <nav class="navbar navbar-default navbar-fixed-bottom">
     <div class="container" style="padding:0;" ng-if="art.status=='在售'||art.status=='预售'">
         <!--<div type="button" ng-click="goList()" style="width:40%; cursor:pointer; height:50px;line-height:50px;text-align:center;margin:0;border:none;background:#265a88;color:#fff;float:left;"><span class="glyphicon glyphicon-heart"></span>收藏</div>-->
-        <div type="button" ng-click="buy()" style="width:100%;cursor:pointer;height:50px;line-height:50px;text-align:center;margin:0;border:none;background:#ed9e2d;color:#fff;">
+        <div type="button" ng-click="buy()" style="width:100%;cursor:pointer;height:50px;line-height:50px;text-align:center;margin:0;border:none;background:#ffff00;color:#000;">
             立即购买(<span class="glyphicon glyphicon-yen"></span>{{art.price}})
         </div>
     </div>
     <div class="container" style="padding:0;" ng-if="art.status=='售罄'">
-        <div type="button" style="width:100%;cursor:pointer;height:50px;line-height:50px;text-align:center;margin:0;border:none;background:#edff2d;color:#fff;">
+        <div type="button" style="width:100%;cursor:pointer;height:50px;line-height:50px;text-align:center;margin:0;border:none;background:#ffff00;color:#000;">
             已售罄
         </div>
     </div>

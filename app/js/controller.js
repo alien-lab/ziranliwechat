@@ -571,12 +571,12 @@
         function ($scope, $rootScope, courseService, toaster, $state, wechatObject, wechatService, rootpath) {
             $scope.title = "课程列表";
             $scope.courselist = [];
-            // $scope.$watch("$root.openid",function(newvalue,oldvalue){
-            //     console.log("openid changed:",newvalue);
-            //     if(newvalue&&newvalue!=""){
-            //         toaster.pop("info","操作提示","获取到openid:"+newvalue);
-            //     }
-            // },true);
+            $scope.$watch("$root.openid",function(newvalue,oldvalue){
+                console.log("openid changed:",newvalue);
+                if(newvalue&&newvalue!=""){
+                    wxshare();
+                }
+            },true);
 
             function loadCourseList() {
                 console.log("loaddata");
@@ -624,7 +624,7 @@
 
             $scope.$on("wxready", function () {
                 console.log("listen on wxready");
-                wxshare();
+
             });
         }]);
 

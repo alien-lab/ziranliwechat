@@ -3,12 +3,10 @@
         list-style: none;
         margin:0;
         padding:0;
-        margin-top:51px;
     }
     .normal_list li{
         margin:0;
         padding:0;
-        margin-bottom:10px;
     }
     .normal_list .list_pic{
         width:100%;
@@ -21,12 +19,13 @@
     .normal_list .list_info{
         width:100%;
         height:auto;
+        min-height:139px;
     }
     .normal_list .list_name{
         width:100%;
         text-align: center;
         padding:10px 0;
-        font-size:180%;
+        font-size:150%;
         font-weight:500;
     }
     .normal_list .list_desc{
@@ -35,24 +34,20 @@
         padding:0 5px;
     }
     .normal_list .list_desc_word{
+        font-size:85%;
         padding:10px;
         text-align:left;
         text-indent:2em;
         display: -webkit-box;
         line-height:1.8;
         -webkit-box-orient: vertical;
-        -webkit-line-clamp: 3;
+        -webkit-line-clamp: 1;
         overflow: hidden;
     }
 </style>
-<nav class="navbar navbar-default navbar-fixed-top">
-    <div class="navbar-brand">
-        课程
-    </div>
-</nav>
 <ul class="row normal_list" >
     <li class="col-md-12" ng-repeat="course in courselist" ng-click="courseClick(course)">
-        <div class="list_pic"  alien-image image="{{(course.coverImage&&course.coverImage.length>0)?course.coverImage:rootpath+'image/noimg.jpg'}}">&nbsp;</div>
+        <div class="list_pic"  alien-image rate="1.5" image="{{(course.coverImage&&course.coverImage.length>0)?course.coverImage:rootpath+'image/noimg.jpg'}}">&nbsp;</div>
         <div class="list_info" style="background:rgba(240,240,240,0.8);">
             <div class="list_name">{{course.name}}</div>
             <div class="list_desc">

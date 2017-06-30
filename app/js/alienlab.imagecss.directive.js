@@ -16,7 +16,7 @@
                         rate=2;
                     }
                     console.log(element.width());
-                    element.css("height",(element.width()/parseInt(rate)));
+                    element.css("height",(element.width()/rate));
                     element.css("background-image","url('"+scope.image+"')");
                     element.css("background-size","cover");
                     element.css("background-position","center center");

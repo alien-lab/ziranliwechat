@@ -9,7 +9,7 @@
     #container{
         margin-top:51px;
         margin-bottom:51px;
-        padding:5px;
+        padding:5px 20px;
     }
 </style>
 
@@ -27,21 +27,18 @@
         <!--<strong>{{course.price|currency:'¥'}}</strong>-->
         <!--<small>分享后：{{course.price2>0?course.price2:'免费'}}</small>-->
     <!--</h4>-->
-    <p class="text">{{course.memo}}</p>
+    <p class="text" style="margin-top:15px;">{{course.memo}}</p>
     <div class="devide"></div>
     <div class="clearfix"></div>
     <div class="list-group-item" ng-if="onlive.bc_name" ng-click="gotoonlive(onlive)">
         <div class="col-xs-4" alien-image rate="1" image="{{('http://test.moistmedia.net/wechatcore/onlive/media/cover/'+onlive.bc_cover)}}">
             &nbsp;
         </div>
-        <div class="col-xs-6">
+        <div class="col-xs-8">
             <h4>{{onlive.bc_name}}</h4>
-            <p>
+            <p >
                 {{onlive.bc_abstract}}
             </p>
-        </div>
-        <div class="col-xs-2">
-            <div class="btn btn-success" style="margin-top:40%;" ng-click="gotoonlive(onlive)">进入</div>
         </div>
         <div class="clearfix"></div>
     </div>
@@ -52,13 +49,13 @@
 <nav class="navbar navbar-default navbar-fixed-bottom">
     <div class="container" style="padding:0;" ng-if="order.payStatus!='已支付'">
         <!--<div type="button" ng-click="goList()" style="width:40%; cursor:pointer; height:50px;line-height:50px;text-align:center;margin:0;border:none;background:#265a88;color:#fff;float:left;"><span class="glyphicon glyphicon-heart"></span>收藏</div>-->
-        <div type="button" ng-click="buy()" style="width:100%;cursor:pointer;height:50px;line-height:50px;text-align:center;margin:0;border:none;background:#ed9e2d;color:#fff;">
+        <div type="button" ng-click="buy()" style="width:100%;cursor:pointer;height:50px;line-height:50px;text-align:center;margin:0;border:none;background:#ffff00;color:#000;">
             立即报名
             <!--(<span class="glyphicon glyphicon-yen"></span>{{course.price}}(分享后：{{course.price2>0?course.price2:'免费'}}))-->
         </div>
     </div>
     <div class="container" style="padding:0;" ng-if="order.payStatus=='已支付'">
-        <div type="button" ng-click="gotoonlive(onlive)" style="width:100%;cursor:pointer;height:50px;line-height:50px;text-align:center;margin:0;border:none;background:#edaa2d;color:#fff;">
+        <div type="button" ng-click="gotoonlive(onlive)" style="width:100%;cursor:pointer;height:50px;line-height:50px;text-align:center;margin:0;border:none;background:#ffff00;color:#000;">
             进入课程内容>>
         </div>
     </div>
